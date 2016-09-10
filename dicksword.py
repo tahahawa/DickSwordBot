@@ -76,9 +76,9 @@ async def on_message(message):
                 if row is None:
                     c.execute('INSERT OR REPLACE INTO tallies VALUES (?, ?, ?)', (message.author.id, str(message.author), 1))
                 else:
-                    if (int(row[1]) + 1) % 10 == 0:
+                    if (int(row[2]) + 1) % 10 == 0:
                         await client.send_message(message.channel, '+10D')
-                    c.execute('INSERT OR REPLACE INTO tallies VALUES (?, ?, ?)', (message.author.id, str(message.author), row[1] + 1))
+                    c.execute('INSERT OR REPLACE INTO tallies VALUES (?, ?, ?)', (message.author.id, str(message.author), row[2] + 1))
 
                 conn.commit()
 

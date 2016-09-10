@@ -4,7 +4,11 @@ import asyncio
 import logging
 import signal
 import sys
+import random
 
+bofh = open('bofh-excuses', 'r')
+
+bofh_excuses = bofh.read().split('%')
 
 logging.basicConfig(level=logging.INFO)
 
@@ -60,6 +64,8 @@ async def on_message(message):
                 await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned dongs 0 times')
             else:
                 await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned dongs ' + str(row[2]) + ' times')
+    elif message.content.startswith('$bofh'):
+        await client.send_message(message.channel, bofh_excuses[random.randrange(0, len(bofh_excuses)] ) )
     elif client.user == message.author:
         pass
     else:

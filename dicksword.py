@@ -65,7 +65,7 @@ async def on_message(message):
             else:
                 await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned dongs ' + str(row[2]) + ' times')
     elif message.content.startswith('$bofh'):
-        await client.send_message(message.channel, bofh_excuses[random.randrange(0, len(bofh_excuses)] ) )
+        await client.send_message(message.channel, bofh_excuses[random.randrange(0, len(bofh_excuses))])
     elif client.user == message.author:
         pass
     else:

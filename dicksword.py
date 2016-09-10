@@ -51,7 +51,7 @@ async def on_message(message):
             if row is None:
                 await client.send_message(message.channel, str(message.author.name) + ' has mentioned dongs 0 times')
             else:
-                await client.send_message(message.channel, str(message.author.name) + ' has mentioned dongs ' + str(row[1]) + ' times')
+                await client.send_message(message.channel, str(message.author.name) + ' has mentioned dongs ' + str(row[2]) + ' times')
         else:
             c.execute('SELECT * FROM tallies WHERE ? LIKE user',
                       (' '.join(message.content.split(' ')[1:]),))
@@ -59,7 +59,7 @@ async def on_message(message):
             if row is None:
                 await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned dongs 0 times')
             else:
-                await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned dongs ' + str(row[1]) + ' times')
+                await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned dongs ' + str(row[2]) + ' times')
     elif client.user == message.author:
         pass
     else:

@@ -71,7 +71,7 @@ async def on_message(message):
     else:
         #        print(message.author.id)
         for w in wordlist:
-            if w in message.content.lower():
+            if w.lower() in message.content.lower():
                 #               await client.send_message(message.channel, '+D')
                 #               print(type(message.author))
                 #               print(message.author.name)

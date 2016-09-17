@@ -23,10 +23,11 @@ conn = sqlite3.connect(config['db_file'])
 c = conn.cursor()
 c.execute('create table if not exists tallies (id integer primary key, user text, tally integer)')
 
+
 class GracefulKiller:
     """."""
 
-    def exit_gracefully(self, signum, frame):
+    def exit_gracefully(self, signum):
         """."""
         conn.close()
         client.close()

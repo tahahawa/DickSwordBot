@@ -5,22 +5,23 @@ import logging
 import signal
 import sys
 import random
+import yaml
 
-bofh = open('bofh-excuses', 'r')
+config = yaml.load(open('config.yaml', 'r'))
 
-bofh_excuses = bofh.read().split('%')
+wordlist = config['wordlist']
+
+fortune_file = open(config['fortune_file'], 'r')
+
+fortunes = fortune_file.read().split('%')
 
 logging.basicConfig(level=logging.INFO)
 
 client = discord.Client()
 
-conn = sqlite3.connect('dicksword.db')
+conn = sqlite3.connect(config['db_file'])
 c = conn.cursor()
 c.execute('create table if not exists tallies (id integer primary key, user text, tally integer)')
-
-wordlist = ["dick", "dong", "hung", "cock",
-            "penis", "schlong", "shlong", "weener", "+D"]
-
 
 class GracefulKiller:
     """."""
@@ -47,25 +48,25 @@ async def on_ready():
 @client.event
 async def on_message(message):
     """Yep."""
-    if message.content.startswith('$dstats'):
+    if message.content.startswith(config['prefix'] + 'stats'):
         if len(message.content.split(' ')) == 1:
             c.execute('SELECT * FROM tallies WHERE ?=id',
                       (str(message.author.id),))
             row = c.fetchone()
             if row is None:
-                await client.send_message(message.channel, str(message.author.name) + ' has mentioned dongs 0 times')
+                await client.send_message(message.channel, str(message.author.name) + ' has mentioned ' + config['wordlist_keyword'] + ' 0 times')
             else:
-                await client.send_message(message.channel, str(message.author.name) + ' has mentioned dongs ' + str(row[2]) + ' times')
+                await client.send_message(message.channel, str(message.author.name) + ' has mentioned ' + config['wordlist_keyword'] + ' ' + str(row[2]) + ' times')
         else:
             c.execute('SELECT * FROM tallies WHERE ? LIKE user',
                       (' '.join(message.content.split(' ')[1:]),))
             row = c.fetchone()
             if row is None:
-                await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned dongs 0 times')
+                await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned ' + config['wordlist_keyword'] + ' 0 times')
             else:
-                await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned dongs ' + str(row[2]) + ' times')
-    elif message.content.startswith('$bofh'):
-        await client.send_message(message.channel, bofh_excuses[random.randrange(0, len(bofh_excuses))])
+                await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned ' + config['wordlist_keyword'] + ' ' + str(row[2]) + ' times')
+    elif message.content.startswith(config['prefix'] + config['fortune_keyword']):
+        await client.send_message(message.channel, fortunes[random.randrange(0, len(fortunes))])
     elif client.user == message.author:
         pass
     else:
@@ -88,4 +89,4 @@ async def on_message(message):
 
                 conn.commit()
 
-client.run('token')
+client.run(config['token'])

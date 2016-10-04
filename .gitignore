@@ -60,3 +60,4 @@ target/
 
 #Ignore yaml config
 *.yaml
+*.db

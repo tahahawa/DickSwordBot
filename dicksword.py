@@ -44,6 +44,7 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+    print('Word list: ' + str(config['wordlist']))
 
 
 @client.event
@@ -66,6 +67,8 @@ async def on_message(message):
                 await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned ' + config['wordlist_keyword'] + ' 0 times')
             else:
                 await client.send_message(message.channel, ' '.join(message.content.split(' ')[1:]) + ' has mentioned ' + config['wordlist_keyword'] + ' ' + str(row[2]) + ' times')
+    elif message.content.startswith(config['prefix'] + 'wordlist'):
+        await client.send_message(message.channel, 'Word list: ' + str(config['wordlist']))
     elif message.content.startswith(config['prefix'] + config['fortune_keyword']):
         await client.send_message(message.channel, fortunes[random.randrange(0, len(fortunes))])
     elif client.user == message.author:
